@@ -1,0 +1,28 @@
+{
+  "name": "ffs-delay",
+  "version": "1.0.0",
+  "description": "App that checks ffs train delay.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matitalatina/ffs-delay.git"
+  },
+  "keywords": [
+    "fss",
+    "sbb",
+    "trains",
+    "delay"
+  ],
+  "author": "Mattia Natali",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matitalatina/ffs-delay/issues"
+  },
+  "homepage": "https://github.com/matitalatina/ffs-delay#readme",
+  "dependencies": {
+    "request": "2.79.0"
+  }
+}
