@@ -10,15 +10,15 @@ function toJsonQ(request) {
   request
     .on('data', (data) => json += data)
     .on('error', (err) => deferred.reject(err))
-    .on('end', () => deferred.resolve(json));
+    .on('end', () => deferred.resolve(JSON.parse(json)));
   return deferred.promise;
 }
 
 
-function ffsApi() {
-  this.BASE_PATH = 'http://transport.opendata.ch/v1/'; 
-  this.STATION_BOARD_ENDPOINT = 'stationboard';
-}
+function ffsApi() {}
+
+ffsApi.prototype.BASE_PATH = 'http://transport.opendata.ch/v1/'; 
+ffsApi.prototype.STATION_BOARD_ENDPOINT = 'stationboard';
 
 ffsApi.prototype.getStationboard = function (options) {
   return toJsonQ(request.get(this.BASE_PATH + this.STATION_BOARD_ENDPOINT, {qs: options}));
@@ -31,7 +31,7 @@ function stationboardOptionsFactory(options) {
 }
 
 stationboardOptionsFactory.prototype.withDatetime = function (date) {
-  this.options.datetime = moment(date).format('YYYY-MM-DD hh:mm');
+  this.options.datetime = date.format('YYYY-MM-DD HH:mm');
   return this;
 }
 
