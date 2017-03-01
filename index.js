@@ -14,8 +14,7 @@ function getTrainsWithDestinations(trains, destinations) {
 function onStart() {
   var optionsFactory = new stationboardOptionsFactory({
     station: 'Mendrisio S. Martino',
-    limit: 1,
-    type: 'arrival',
+    limit: 10,
     transportations: ['s_sn_r', 'ec_ic']
   }).withDatetime(moment().hours(19).minutes(30));
 
