@@ -2,26 +2,18 @@
 
 const request = require('request');
 const moment = require('moment');
-const Q = require('q');
-
-function toJsonQ(request) {
-  var deferred = Q.defer();
-  var json = '';
-  request
-    .on('data', (data) => json += data)
-    .on('error', (err) => deferred.reject(err))
-    .on('end', () => deferred.resolve(JSON.parse(json)));
-  return deferred.promise;
-}
+const RequestUtils = require('../request/utils.js').RequestUtils;
 
 
-function ffsApi() {}
+function FfsApi() {}
 
-ffsApi.prototype.BASE_PATH = 'http://transport.opendata.ch/v1/'; 
-ffsApi.prototype.STATION_BOARD_ENDPOINT = 'stationboard';
+FfsApi.prototype.BASE_PATH = 'http://transport.opendata.ch/v1/';
+FfsApi.prototype.STATION_BOARD_ENDPOINT = 'stationboard';
 
-ffsApi.prototype.getStationboard = function (options) {
-  return toJsonQ(request.get(this.BASE_PATH + this.STATION_BOARD_ENDPOINT, {qs: options}));
+FfsApi.prototype.getStationboard = function (options) {
+  return RequestUtils.toJsonQ(request.get(this.BASE_PATH + this.STATION_BOARD_ENDPOINT, {
+    qs: options
+  }));
 }
 
 
@@ -45,5 +37,5 @@ stationboardOptionsFactory.prototype.getOptions = function () {
 }
 
 var exports = module.exports = {};
-exports.ffsApi = ffsApi;
+exports.FfsApi = FfsApi;
 exports.stationboardOptionsFactory = stationboardOptionsFactory;
