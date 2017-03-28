@@ -47,7 +47,7 @@ function checkDelay() {
       .filter((t) => !!t.stop.delay)
       .map((t) => {
         var hipchatApi = new HipchatApi(hipchatToken);
-        var message = `Ritardo di ${t.stop.delay} minuti. ${stationName} (${moment(t.stop.departure).format('HH:mm')})-> ${t.to}`;
+        var message = `Ritardo di ${t.stop.delay} minuti. ${stationName} (${moment(t.stop.departure).format('HH:mm')}) -> ${t.to}`;
         return hipchatApi.sendNotification(hipchatRoomId, {
           from: 'FfsDelay',
           notify: true,
