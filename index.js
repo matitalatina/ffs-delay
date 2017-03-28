@@ -5,9 +5,25 @@ const HipchatApi = require('./hipchat/api.js').HipchatApi;
 const stationboardOptionsFactory = require('./ffs/api.js').stationboardOptionsFactory;
 const moment = require('moment');
 const _ = require('lodash');
+const cron = require('cron');
 
 const hipchatRoomId = process.env.HIPCHAT_ROOM_ID;
 const hipchatToken = process.env.HIPCHAT_TOKEN;
+
+const stationName = 'Mendrisio S. Martino';
+const limitTrains = 3;
+const transportationFilter = ['s_sn_r', 'ec_ic'];
+const timeTrain = moment().hour(17).minute(45);
+const trainDestinations = ['chiasso', 'albate'];
+
+const cronTimes = [
+  //'*/10 * * * * *',
+  '40-55/1 17 * * 1-5',
+  '40-55/1 18 * * 1-5',
+  '10-25/1 19 * * 1-5'
+];
+
+const timeZone = 'Europe/Rome';
 
 function getTrainsWithDestinations(trains, destinations) {
   var destinations = destinations.map((d) => d.toLowerCase());
@@ -17,20 +33,21 @@ function getTrainsWithDestinations(trains, destinations) {
   });
 }
 
-function onStart() {
+function checkDelay() {
+  console.log('check');
   var optionsFactory = new stationboardOptionsFactory({
-    station: 'Mendrisio S. Martino',
-    limit: 10,
-    transportations: ['s_sn_r', 'ec_ic']
+    station: stationName,
+    limit: limitTrains,
+    transportations: transportationFilter
   }).withDatetime(moment());
 
   new FfsApi().getStationboard(optionsFactory.getOptions())
-    .then((data) => getTrainsWithDestinations(data.stationboard, ['chiasso', 'albate']))
+    .then((data) => getTrainsWithDestinations(data.stationboard, trainDestinations))
     .then((trains) => trains
       .filter((t) => !!t.stop.delay)
       .map((t) => {
         var hipchatApi = new HipchatApi(hipchatToken);
-        var message = `Ritardo di ${t.stop.station.delay} minuti del treno diretto a ${t.to} delle ${moment(t.stop.station.departureTimestamp).format('HH:mm')}`;
+        var message = `Ritardo di ${t.stop.delay} minuti. ${stationName} (${moment(t.stop.departure).format('HH:mm')})-> ${t.to}`;
         return hipchatApi.sendNotification(hipchatRoomId, {
           from: 'FfsDelay',
           notify: true,
@@ -41,6 +58,15 @@ function onStart() {
     .catch((err) => console.log(err));
 }
 
-
+function onStart() {
+  cronTimes.forEach((cronTime) => {
+    new cron.CronJob({
+      cronTime: cronTime,
+      onTick: checkDelay,
+      start: true,
+      timeZone: timeZone
+    });
+  });
+}
 
 onStart();

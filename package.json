@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/matitalatina/ffs-delay#readme",
   "dependencies": {
+    "cron": "^1.2.1",
     "moment": "^2.17.1",
     "q": "^1.4.1",
     "request": "2.79.0"
