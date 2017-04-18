@@ -6,6 +6,7 @@ const stationboardOptionsFactory = require('./ffs/api.js').stationboardOptionsFa
 const moment = require('moment');
 const _ = require('lodash');
 const cron = require('cron');
+const delayChecker = new (require('./ffs/delay-checker.js'))();
 
 const hipchatRoomId = process.env.HIPCHAT_ROOM_ID;
 const hipchatToken = process.env.HIPCHAT_TOKEN;
@@ -17,7 +18,7 @@ const timeTrain = moment().hour(17).minute(45);
 const trainDestinations = ['chiasso', 'albate'];
 
 const cronTimes = [
-  //'*/10 * * * * *',
+  //'*/5 * * * * *',
   '35-55/1 17 * * 1-5',
   '5-25/1 18 * * 1-5',
   '35-55/1 18 * * 1-5',
@@ -45,7 +46,7 @@ function checkDelay() {
   new FfsApi().getStationboard(optionsFactory.getOptions())
     .then((data) => getTrainsWithDestinations(data.stationboard, trainDestinations))
     .then((trains) => trains
-      .filter((t) => !!t.stop.delay)
+      .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
       .map((t) => {
         var hipchatApi = new HipchatApi(hipchatToken);
         var message = `Ritardo di ${t.stop.delay} minuti. ${stationName} (${moment(t.stop.departure).format('HH:mm')}) -> ${t.to}`;
@@ -68,6 +69,13 @@ function onStart() {
       timeZone: timeZone
     });
   });
+  
+  new cron.CronJob({
+      cronTime: '0 0 * * 1-5',
+      onTick: () => delayChecker.reset(),
+      start: true,
+      timeZone: timeZone
+    });
 }
 
 onStart();
