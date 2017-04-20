@@ -22,7 +22,7 @@ class HipchatApi {
 
   sendNotification(roomId, message) {
     /* Message format: https://www.hipchat.com/docs/apiv2/method/send_room_notification */
-    console.log(roomId, message)
+    console.log('RoomId: ' + roomId, message)
     const url = HipchatApi.getRoomNotificationEnpoint(roomId);
     request.post(url, {
       headers: {

@@ -4,7 +4,7 @@
   "description": "App that checks ffs train delay.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha **/**.spec.js"
+    "test": "mocha --recursive libs/"
   },
   "repository": {
     "type": "git",

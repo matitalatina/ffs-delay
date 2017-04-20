@@ -12,12 +12,20 @@ class Journey {
     this.stop = defaults.stop;
   }
 
-  static fromFfsModel(ffsTrain) {
+  static fromFfsModel(ffsJourney) {
     return new this({
-      stop: Stop.fromFfsModel(ffsTrain.stop),
-      name: ffsTrain.name,
-      to: ffsTrain.to,
+      stop: Stop.fromFfsModel(ffsJourney.stop),
+      name: ffsJourney.name,
+      to: ffsJourney.to,
     });
+  }
+
+  get id() {
+    return (this.name || '') +
+      (this.stop && this.stop.departure);
+  }
+  get hasDelay() {
+    return !!(this.stop && this.stop.delay);
   }
 }
 

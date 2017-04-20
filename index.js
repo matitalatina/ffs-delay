@@ -1,12 +1,12 @@
 'use strict';
 
-const FfsApi = require('./ffs/api.js').FfsApi;
-const HipchatApi = require('./hipchat/api.js').HipchatApi;
-const stationboardOptionsFactory = require('./ffs/api.js').stationboardOptionsFactory;
+const FfsApi = require('./libs/ffs/api.js').FfsApi;
+const HipchatApi = require('./libs/hipchat/api.js').HipchatApi;
+const stationboardOptionsFactory = require('./libs/ffs/api.js').stationboardOptionsFactory;
 const moment = require('moment');
 const _ = require('lodash');
 const cron = require('cron');
-const delayChecker = new (require('./ffs/delay-checker.js'))();
+const delayChecker = new(require('./libs/ffs/delay-checker.js'))();
 
 const hipchatRoomId = process.env.HIPCHAT_ROOM_ID;
 const hipchatToken = process.env.HIPCHAT_TOKEN;
@@ -69,13 +69,13 @@ function onStart() {
       timeZone: timeZone
     });
   });
-  
+
   new cron.CronJob({
-      cronTime: '0 0 * * 1-5',
-      onTick: () => delayChecker.reset(),
-      start: true,
-      timeZone: timeZone
-    });
+    cronTime: '0 0 * * 1-5',
+    onTick: () => delayChecker.reset(),
+    start: true,
+    timeZone: timeZone
+  });
 }
 
 onStart();

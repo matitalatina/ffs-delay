@@ -47,4 +47,18 @@ describe('Stop model', () => {
       .to.be.equal(moment("2012-03-31T14:39:00+02:00").valueOf());
     expect(stop.platform).to.be.equal('bla');
   });
+
+  it('should have hasDelay property', () => {
+    let stop = new Stop({
+      delay: 3
+    });
+    expect(stop.hasDelay).to.be.true;
+    stop.delay = 0;
+    expect(stop.hasDelay).to.be.false;
+    stop.delay = null;
+    expect(stop.hasDelay).to.be.false;
+
+    stop = new Stop({});
+    expect(stop.hasDelay).to.be.false;
+  });
 });
