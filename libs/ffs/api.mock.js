@@ -66,7 +66,7 @@ exports.stationboardResponseWithDelay = {
     "categoryCode": 5,
     "number": "10",
     "operator": "SBB",
-    "to": "Giubiasco",
+    "to": "Chiasso",
     "passList": [{
       "station": {
         "id": "8518475",
@@ -682,7 +682,7 @@ exports.stationboardResponseWithDelay = {
     "categoryCode": 5,
     "number": "10",
     "operator": "SBB",
-    "to": "Bellinzona",
+    "to": "Chiasso",
     "passList": [{
       "station": {
         "id": "8518475",
