@@ -12,11 +12,11 @@ let ffsMock = FfsMock
 describe('FfsApi', () => {
   it('should do the call on stationboard endpoint', () => {
     let ffsApi = new FfsApi();
-    ffsApi.getStationboard({})
+    return ffsApi.getStationboard({})
       .then((response) => {
         expect(response).to.be.a('object');
-        expect(response).to.be.true;
-        expect(response).to.be.equal(JSON.parse(mockStationBoard));
+        expect(response).to.be.ok;
+        expect(response).to.be.eql(FfsMock.stationboardResponseWithDelay);
         ffsMock.done();
       });
   });

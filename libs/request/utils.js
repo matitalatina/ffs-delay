@@ -6,6 +6,7 @@ class RequestUtils {
   static toJsonQ(request) {
     var deferred = Q.defer();
     var json = '';
+
     request
       .on('data', (data) => json += data)
       .on('error', (err) => {

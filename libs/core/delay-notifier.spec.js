@@ -4,6 +4,7 @@ const moment = require('moment');
 const DelayNotifier = require('./delay-notifier.js');
 const FfsMock = require('../ffs/api.mock.js');
 const config = require('./config.js');
+const NotificationMock = require('../hipchat/api.mock.js').mockSendNotification;
 
 describe('DelayNotifier', () => {
   it('should notifiy if a train is late', () => {
@@ -15,12 +16,14 @@ describe('DelayNotifier', () => {
         datetime: dateTime
       })
       .reply(200, FfsMock.stationboardResponseWithDelay);
+    const notificationMock = NotificationMock();
 
-    DelayNotifier.checkDelay({
+    return DelayNotifier.checkDelay({
         datetime: dateTime
       })
-      .then(() => {
+      .then((response) => {
         mockFfsStationBoard.done();
+        notificationMock.done();
       });
   });
 });
