@@ -2,6 +2,8 @@
 
 const request = require('request');
 const moment = require('moment');
+const _ = require('lodash');
+
 const RequestUtils = require('../request/utils.js').RequestUtils;
 
 

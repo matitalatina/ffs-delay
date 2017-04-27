@@ -9,15 +9,14 @@ App that checks Swiss trains and notifies you in HipChat if any of them have som
 
 ## Getting Started
 
-- Add `.envars` file in the project root.
+- Add `prod.env` file in the project root.
 
 ```
 export HIPCHAT_TOKEN='YOUR HIPCHAT ROOM TOKEN';
 export HIPCHAT_ROOM_ID='YOUR HIPCHAT ROOM ID';
 ```
-- Change constants inside `index.js` to satisfy your needs.
+- Change constants inside `./libs/core/config.js` to satisfy your needs.
 - `npm install`
-- `source .envars`
-- `node index.js`
+- `npm start`
 - Never run to catch a delayed train again!
 
