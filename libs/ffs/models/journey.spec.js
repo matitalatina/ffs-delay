@@ -55,6 +55,7 @@ describe('Train', () => {
     expect(journey.to).to.be.equal('Frick, Bahnhof');
     expect(journey.stop).to.be.an.instanceOf(Stop);
     expect(journey.stop.delay).to.be.equal(13);
+    expect(journey.stop.departure).to.be.an('object');
   });
 
   it('should have hasDelay property', () => {

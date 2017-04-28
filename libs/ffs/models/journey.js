@@ -18,6 +18,7 @@ class Journey {
       stop: Stop.fromFfsModel(ffsJourney.stop),
       name: ffsJourney.name,
       to: ffsJourney.to,
+      number: ffsJourney.number
     });
   }
 

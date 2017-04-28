@@ -7,6 +7,7 @@ const moment = require('moment');
 const _ = require('lodash');
 const cron = require('cron');
 const Q = require('q');
+const Journey = require('../ffs/models/journey.js');
 
 const delayChecker = new(require('../ffs/delay-checker.js'))();
 const config = require('./config.js');
@@ -30,7 +31,10 @@ function checkDelay(ffsOptions) {
     .withOptions(ffsOptions);
 
   return new FfsApi().getStationboard(optionsFactory.getOptions())
-    .then((data) => getTrainsWithDestinations(data.stationboard, config.trainDestinations))
+    .then((data) => {
+      let journeys = data.stationboard.map((j) => Journey.fromFfsModel(j));
+      return getTrainsWithDestinations(journeys, config.trainDestinations)
+    })
     .then((trains) => Q.all(trains
       .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
       .map((t) => {
