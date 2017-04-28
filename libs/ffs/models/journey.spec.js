@@ -83,6 +83,7 @@ describe('Train', () => {
       let departure = moment()
       let journey1 = new Journey({
         name: 'bla',
+        number: '14',
         stop: new Stop({
           departure: departure
         })
@@ -90,6 +91,7 @@ describe('Train', () => {
 
       let journey2 = new Journey({
         name: 'bla',
+        number: '14',
         stop: new Stop({
           departure: moment(departure)
         })
@@ -105,7 +107,7 @@ describe('Train', () => {
 
       expect(journey1.id).to.be.equal(journey2.id);
 
-      journey2.stop.departure.hours(departure.hours() + 1)
+      journey2.number = '12';
 
       expect(journey1.id).to.not.be.equal(journey2.id);
 

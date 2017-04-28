@@ -10,6 +10,7 @@ class Journey {
     this.name = defaults.name;
     this.to = defaults.to;
     this.stop = defaults.stop;
+    this.number = defaults.number;
   }
 
   static fromFfsModel(ffsJourney) {
@@ -21,8 +22,7 @@ class Journey {
   }
 
   get id() {
-    return (this.name || '') +
-      (this.stop && this.stop.departure);
+    return (this.name || '') + this.to + this.number;
   }
   get hasDelay() {
     return !!(this.stop && this.stop.delay);
