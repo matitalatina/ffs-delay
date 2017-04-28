@@ -4,8 +4,8 @@
   "description": "App that checks ffs train delay.",
   "main": "index.js",
   "scripts": {
-    "start": "source prod.env && node index.js",
-    "test": "source test.env && mocha --recursive libs/"
+    "start": ". ./prod.env && node index.js",
+    "test": ". ./test.env && mocha --recursive libs/"
   },
   "repository": {
     "type": "git",
