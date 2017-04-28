@@ -23,7 +23,7 @@ class HipchatApi {
   sendNotification(roomId, message) {
     /* Message format: https://www.hipchat.com/docs/apiv2/method/send_room_notification */
     const url = HipchatApi.getRoomNotificationEnpoint(roomId);
-    console.log('RoomId: ' + roomId, message, url)
+    //console.log('RoomId: ' + roomId, message, url)
     return RequestUtils.toJsonQ(request.post(url, {
       headers: {
         Authorization: 'Bearer ' + this.apiKey

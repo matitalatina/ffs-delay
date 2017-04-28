@@ -21,7 +21,6 @@ function getTrainsWithDestinations(trains, destinations) {
 }
 
 function checkDelay(ffsOptions) {
-  console.log('check');
   var optionsFactory = new stationboardOptionsFactory({
       station: config.stationName,
       limit: config.limitTrains,
