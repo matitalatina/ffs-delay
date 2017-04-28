@@ -22,15 +22,15 @@ class HipchatApi {
 
   sendNotification(roomId, message) {
     /* Message format: https://www.hipchat.com/docs/apiv2/method/send_room_notification */
-    console.log('RoomId: ' + roomId, message)
     const url = HipchatApi.getRoomNotificationEnpoint(roomId);
-    request.post(url, {
+    console.log('RoomId: ' + roomId, message, url)
+    return RequestUtils.toJsonQ(request.post(url, {
       headers: {
         Authorization: 'Bearer ' + this.apiKey
       },
       body: message,
       json: true
-    });
+    }));
   }
 }
 

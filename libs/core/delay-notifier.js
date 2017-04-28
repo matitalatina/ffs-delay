@@ -6,6 +6,8 @@ const stationboardOptionsFactory = require('../ffs/api.js').stationboardOptionsF
 const moment = require('moment');
 const _ = require('lodash');
 const cron = require('cron');
+const Q = require('q');
+
 const delayChecker = new(require('../ffs/delay-checker.js'))();
 const config = require('./config.js');
 
@@ -29,7 +31,7 @@ function checkDelay(ffsOptions) {
 
   return new FfsApi().getStationboard(optionsFactory.getOptions())
     .then((data) => getTrainsWithDestinations(data.stationboard, config.trainDestinations))
-    .then((trains) => trains
+    .then((trains) => Q.all(trains
       .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
       .map((t) => {
         var hipchatApi = new HipchatApi(config.hipchatToken);
@@ -39,8 +41,7 @@ function checkDelay(ffsOptions) {
           notify: true,
           message: message
         });
-      })
-    )
+      })))
     .catch((err) => console.log(err));
 }
 
