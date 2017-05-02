@@ -14,7 +14,7 @@ class RequestUtils {
         deferred.reject(err);
       })
       .on('end', (response) => {
-        deferred.resolve(JSON.parse(json));
+        deferred.resolve(JSON.parse(json || '{}'));
       });
     return deferred.promise;
   }
