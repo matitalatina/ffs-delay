@@ -1,6 +1,6 @@
 'use strict';
 
-const request = require('request');
+const request = require('request-promise');
 const moment = require('moment');
 const _ = require('lodash');
 
@@ -13,7 +13,7 @@ FfsApi.prototype.BASE_PATH = 'http://transport.opendata.ch/v1/';
 FfsApi.prototype.STATION_BOARD_ENDPOINT = 'stationboard';
 
 FfsApi.prototype.getStationboard = function (options) {
-  return RequestUtils.toJsonQ(request.get(this.BASE_PATH + this.STATION_BOARD_ENDPOINT, {
+  return RequestUtils.toJson(request.get(this.BASE_PATH + this.STATION_BOARD_ENDPOINT, {
     qs: options
   }));
 }

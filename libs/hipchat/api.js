@@ -1,5 +1,5 @@
 'use strict';
-const request = require('request');
+const request = require('request-promise');
 
 const RequestUtils = require('../request/utils.js').RequestUtils;
 
@@ -24,7 +24,7 @@ class HipchatApi {
     /* Message format: https://www.hipchat.com/docs/apiv2/method/send_room_notification */
     const url = HipchatApi.getRoomNotificationEnpoint(roomId);
     //console.log('RoomId: ' + roomId, message, url)
-    return RequestUtils.toJsonQ(request.post(url, {
+    return RequestUtils.toJson(request.post(url, {
       headers: {
         Authorization: 'Bearer ' + this.apiKey
       },
