@@ -1,6 +1,7 @@
 'use strict';
 
 const Stop = require('./stop.js');
+const _ = require('lodash');
 
 class Journey {
   constructor(defaults) {
@@ -10,14 +11,17 @@ class Journey {
     this.to = defaults.to;
     this.stop = defaults.stop;
     this.number = defaults.number;
+    this.passList = defaults.passList;
   }
 
   static fromFfsModel(ffsJourney) {
+    let passList = ffsJourney.passList || [];
     return new this({
       stop: Stop.fromFfsModel(ffsJourney.stop),
       name: ffsJourney.name,
       to: ffsJourney.to,
-      number: ffsJourney.number
+      number: ffsJourney.number,
+      passList: passList.map(s => Stop.fromFfsModel(s))
     });
   }
 
@@ -26,6 +30,13 @@ class Journey {
   }
   get hasDelay() {
     return !!(this.stop && this.stop.delay);
+  }
+
+  isStoppingIn(stationName) {
+    return !!_.find(this.passList, s => _.includes(
+      s.station.name.toLowerCase(),
+      stationName.toLowerCase()
+    ));
   }
 }
 

@@ -10,11 +10,15 @@ describe('Stop model', () => {
     let departure = moment('2012-03-31T14:39:00+02:00');
     let stop = new Stop({
       departure: moment('2012-03-31T14:39:00+02:00'),
-      platform: 'bla'
+      platform: 'bla',
+      station: {
+        name: 'station'
+      }
     });
     expect(stop.departure.valueOf())
       .to.be.equal(departure.valueOf());
     expect(stop.platform).to.be.equal('bla');
+    expect(stop.station.name).to.be.equal('station');
   });
 
   it('should create an instance from ffs model', () => {
@@ -46,6 +50,7 @@ describe('Stop model', () => {
     expect(stop.departure.valueOf())
       .to.be.equal(moment('2012-03-31T14:39:00+02:00').valueOf());
     expect(stop.platform).to.be.equal('bla');
+    expect(stop.station.name).to.be.equal('Aarau, Bahnhof');
   });
 
   it('should have hasDelay property', () => {

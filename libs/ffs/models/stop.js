@@ -7,13 +7,15 @@ class Stop {
     this.departure = moment(defaults.departure);
     this.platform = defaults.platform;
     this.delay = defaults.delay;
+    this.station = defaults.station;
   }
 
   static fromFfsModel(ffsModel) {
     return new this({
       departure: moment(ffsModel.departure),
       platform: ffsModel.platform,
-      delay: ffsModel.delay
+      delay: ffsModel.delay,
+      station: ffsModel.station
     });
   }
 
