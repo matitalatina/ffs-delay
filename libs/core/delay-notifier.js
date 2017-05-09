@@ -4,7 +4,6 @@ const FfsApi = require('../ffs/api.js').FfsApi;
 const HipchatApi = require('../hipchat/api.js').HipchatApi;
 const stationboardOptionsFactory = require('../ffs/api.js').stationboardOptionsFactory;
 const moment = require('moment');
-const _ = require('lodash');
 const cron = require('cron');
 const Journey = require('../ffs/models/journey.js');
 
@@ -12,7 +11,7 @@ const delayChecker = new(require('../ffs/delay-checker.js'))();
 const config = require('./config.js');
 
 function getTrainsWithDestinations(trains, destinations) {
-  var destinations = destinations.map((d) => d.toLowerCase());
+  destinations = destinations.map((d) => d.toLowerCase());
   return trains.filter(function (train) {
     var currentDestination = train.to.toLowerCase();
     return destinations.reduce((found, dest) => found || currentDestination.includes(dest), false);
@@ -21,12 +20,12 @@ function getTrainsWithDestinations(trains, destinations) {
 
 function checkDelay(ffsOptions) {
   var optionsFactory = new stationboardOptionsFactory({
-      station: config.stationName,
-      limit: config.limitTrains,
-      transportations: config.transportationFilter
-    })
-    .withDatetime(moment())
-    .withOptions(ffsOptions);
+    station: config.stationName,
+    limit: config.limitTrains,
+    transportations: config.transportationFilter
+  })
+  .withDatetime(moment())
+  .withOptions(ffsOptions);
 
   return new FfsApi().getStationboard(optionsFactory.getOptions())
     .then((data) => {

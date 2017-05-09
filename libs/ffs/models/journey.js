@@ -1,6 +1,5 @@
 'use strict';
 
-const moment = require('moment');
 const Stop = require('./stop.js');
 
 class Journey {

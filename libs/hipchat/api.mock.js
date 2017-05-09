@@ -6,8 +6,8 @@ var exports = module.exports = {};
 
 exports.mockSendNotification = () => {
   return nock('https://api.hipchat.com:443', {
-      "encodedQueryParams": true
-    })
+    'encodedQueryParams': true
+  })
     .post('/v2/room/' + process.env.HIPCHAT_ROOM_ID + '/notification', () => true)
     .reply(200, {});
 };
