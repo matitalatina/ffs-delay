@@ -16,18 +16,18 @@ describe('DelayNotifier', () => {
   it('should notify if a train is late', () => {
     let dateTime = moment().format('YYYY-MM-DD HH:mm');
     const mockFfsStationBoard = FfsMock.mockStationBoard().query({
-        station: config.stationName,
-        limit: config.limitTrains,
-        transportations: config.transportationFilter,
-        datetime: dateTime
-      })
+      station: config.stationName,
+      limit: config.limitTrains,
+      transportations: config.transportationFilter,
+      datetime: dateTime
+    })
       .reply(200, FfsMock.stationboardResponseWithDelay);
     const notificationMock = NotificationMock();
 
     return DelayNotifier.checkDelay({
-        datetime: dateTime
-      })
-      .then((response) => {
+      datetime: dateTime
+    })
+      .then(() => {
         mockFfsStationBoard.done();
         notificationMock.done();
       });
@@ -36,28 +36,28 @@ describe('DelayNotifier', () => {
   it('should not notify two times the same delay', () => {
     let dateTime = moment().format('YYYY-MM-DD HH:mm');
     const mockFfsStationBoard = FfsMock.mockStationBoard().query({
-        station: config.stationName,
-        limit: config.limitTrains,
-        transportations: config.transportationFilter,
-        datetime: dateTime
-      })
+      station: config.stationName,
+      limit: config.limitTrains,
+      transportations: config.transportationFilter,
+      datetime: dateTime
+    })
       .reply(200, FfsMock.stationboardResponseWithDelay);
 
     const notificationMock = NotificationMock();
 
     return DelayNotifier.checkDelay({
-        datetime: dateTime
-      })
-      .then((response) => {
+      datetime: dateTime
+    })
+      .then(() => {
         mockFfsStationBoard.done();
         notificationMock.done();
 
         let mockFfsStationBoard2 = FfsMock.mockStationBoard().query({
-            station: config.stationName,
-            limit: config.limitTrains,
-            transportations: config.transportationFilter,
-            datetime: dateTime
-          })
+          station: config.stationName,
+          limit: config.limitTrains,
+          transportations: config.transportationFilter,
+          datetime: dateTime
+        })
           .reply(200, FfsMock.stationboardResponseWithDelay);
 
         return DelayNotifier.checkDelay({
