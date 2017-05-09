@@ -30,7 +30,7 @@ function checkDelay(ffsOptions) {
   return new FfsApi().getStationboard(optionsFactory.getOptions())
     .then((data) => {
       let journeys = data.stationboard.map((j) => Journey.fromFfsModel(j));
-      return getTrainsWithDestinations(journeys, config.trainDestinations)
+      return getTrainsWithDestinations(journeys, config.trainDestinations);
     })
     .then((trains) => Promise.all(trains
       .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
