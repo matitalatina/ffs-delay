@@ -32,11 +32,14 @@ class Journey {
     return !!(this.stop && this.stop.delay);
   }
 
-  isStoppingIn(stationName) {
-    return !!_.find(this.passList, s => _.includes(
-      s.station.name.toLowerCase(),
-      stationName.toLowerCase()
-    ));
+  isStoppingIn(stationNamesSubstring) {
+    if (!_.isArray(stationNamesSubstring)) {
+      stationNamesSubstring = [stationNamesSubstring];
+    }
+    stationNamesSubstring = stationNamesSubstring.map(s => s.toLowerCase());
+    const stationNamesIsPassing = this.passList.map(s => s.station.name.toLowerCase()).concat([this.to.toLowerCase()]);
+    return !!_.find(stationNamesIsPassing,
+      n => !!_.find(stationNamesSubstring, stationName => _.includes(n, stationName)));
   }
 }
 

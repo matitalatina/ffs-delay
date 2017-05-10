@@ -7,16 +7,8 @@ const moment = require('moment');
 const cron = require('cron');
 const Journey = require('../ffs/models/journey.js');
 
-const delayChecker = new(require('../ffs/delay-checker.js'))();
+const delayChecker = new (require('../ffs/delay-checker.js'))();
 const config = require('./config.js');
-
-function getTrainsWithDestinations(trains, destinations) {
-  destinations = destinations.map((d) => d.toLowerCase());
-  return trains.filter(function (train) {
-    var currentDestination = train.to.toLowerCase();
-    return destinations.reduce((found, dest) => found || currentDestination.includes(dest), false);
-  });
-}
 
 function checkDelay(ffsOptions) {
   var optionsFactory = new stationboardOptionsFactory({
@@ -24,15 +16,15 @@ function checkDelay(ffsOptions) {
     limit: config.limitTrains,
     transportations: config.transportationFilter
   })
-  .withDatetime(moment())
-  .withOptions(ffsOptions);
+    .withDatetime(moment())
+    .withOptions(ffsOptions);
 
   return new FfsApi().getStationboard(optionsFactory.getOptions())
     .then((data) => {
-      let journeys = data.stationboard.map((j) => Journey.fromFfsModel(j));
-      return getTrainsWithDestinations(journeys, config.trainDestinations);
+      return data.stationboard.map(j => Journey.fromFfsModel(j)) || [];
     })
-    .then((trains) => Promise.all(trains
+    .then(journeys => journeys.filter(j => j.isStoppingIn(config.trainDestinations)))
+    .then(trains => Promise.all(trains
       .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
       .map((t) => {
         var hipchatApi = new HipchatApi(config.hipchatToken);

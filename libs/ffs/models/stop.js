@@ -4,7 +4,7 @@ const moment = require('moment');
 
 class Stop {
   constructor(defaults) {
-    this.departure = moment(defaults.departure);
+    this.departure = defaults.departure ? moment(defaults.departure) : null;
     this.platform = defaults.platform;
     this.delay = defaults.delay;
     this.station = defaults.station;
@@ -12,7 +12,7 @@ class Stop {
 
   static fromFfsModel(ffsModel) {
     return new this({
-      departure: moment(ffsModel.departure),
+      departure: ffsModel.departure ? moment(ffsModel.departure) : null,
       platform: ffsModel.platform,
       delay: ffsModel.delay,
       station: ffsModel.station

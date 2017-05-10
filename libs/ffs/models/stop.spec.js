@@ -21,6 +21,16 @@ describe('Stop model', () => {
     expect(stop.station.name).to.be.equal('station');
   });
 
+  it('should allow stop without departure', () => {
+    let stop = new Stop({
+      platform: 'bla',
+      station: {
+        name: 'station'
+      }
+    });
+    expect(stop.departure).to.be.null;
+  });
+
   it('should create an instance from ffs model', () => {
     let stop = Stop.fromFfsModel({
       'station': {
