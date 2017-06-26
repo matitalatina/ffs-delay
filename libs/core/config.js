@@ -6,28 +6,32 @@ const hipchatToken = process.env.HIPCHAT_TOKEN;
 const trainFilter = ['s_sn_r', 'ec_ic'];
 const limitTrains = 3;
 
-const cronTimes = [
-  //'*/5 * * * * *',
-  '35-55/1 17 * * 1-5',
-  '5-25/1 18 * * 1-5',
-  '35-55/1 18 * * 1-5',
-  '5-25/1 19 * * 1-5'
-];
-
 const mendrisioSanMartino = {
   stationName: 'Mendrisio S. Martino',
   limitTrains,
   transportationFilter: trainFilter,
   trainDestinations: ['chiasso', 'albate'],
-  cronTimes,
+  cronTimes: [
+    //'*/5 * * * * *',
+    '35-55/1 17 * * 1-5',
+    '5-25/1 18 * * 1-5',
+    '35-55/1 18 * * 1-5',
+    '5-25/1 19 * * 1-5'
+  ],
 };
 
 const mendrisio = {
-  stationName: 'Mendrisio S. Martino',
+  stationName: 'Mendrisio',
   limitTrains,
   transportationFilter: trainFilter,
-  trainDestinations: ['chiasso', 'albate'],
-  cronTimes,
+  trainDestinations: ['chiasso', 'milano'],
+  cronTimes: [
+    //'*/5 * * * * *',
+    '35-59/1 17 * * 1-5',
+    '5-30/1 18 * * 1-5',
+    '35-59/1 18 * * 1-5',
+    '5-30/1 19 * * 1-5'
+  ],
 };
 
 const timeZone = 'Europe/Rome';
@@ -45,7 +49,6 @@ module.exports = {
   hipchatRoomId,
   hipchatToken,
   limitTrains,
-  cronTimes,
   timeZone,
   defaults,
   watchers,
