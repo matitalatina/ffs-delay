@@ -1,6 +1,6 @@
 {
   "name": "ffs-delay",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "App that checks ffs train delay.",
   "main": "index.js",
   "scripts": {

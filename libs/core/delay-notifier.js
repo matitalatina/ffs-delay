@@ -10,43 +10,49 @@ const Journey = require('../ffs/models/journey.js');
 const delayChecker = new (require('../ffs/delay-checker.js'))();
 const config = require('./config.js');
 
-function checkDelay(ffsOptions) {
-  var optionsFactory = new stationboardOptionsFactory({
-    station: config.stationName,
-    limit: config.limitTrains,
-    transportations: config.transportationFilter
-  })
-    .withDatetime(moment())
-    .withOptions(ffsOptions);
-
-  return new FfsApi().getStationboard(optionsFactory.getOptions())
-    .then((data) => {
-      return data.stationboard.map(j => Journey.fromFfsModel(j)) || [];
+function getWatcherJob(watcher) {
+  return function checkDelay(ffsOptions) {
+    var optionsFactory = new stationboardOptionsFactory({
+      station: watcher.stationName,
+      limit: watcher.limitTrains,
+      transportations: watcher.transportationFilter
     })
-    .then(journeys => journeys.filter(j => j.isStoppingIn(config.trainDestinations)))
-    .then(trains => Promise.all(trains
-      .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
-      .map((t) => {
-        var hipchatApi = new HipchatApi(config.hipchatToken);
-        var message = `Ritardo di ${t.stop.delay} minuti. ${config.stationName} (${moment(t.stop.departure).format('HH:mm')}) -> ${t.to}`;
-        return hipchatApi.sendNotification(config.hipchatRoomId, {
-          from: 'FfsDelay',
-          notify: true,
-          message: message
-        });
-      })))
-    .catch((err) => console.log(err));
+      .withDatetime(moment())
+      .withOptions(ffsOptions);
+
+    return new FfsApi().getStationboard(optionsFactory.getOptions())
+      .then((data) => {
+        return data.stationboard.map(j => Journey.fromFfsModel(j)) || [];
+      })
+      .then(journeys => journeys.filter(j => j.isStoppingIn(watcher.trainDestinations)))
+      .then(trains => Promise.all(trains
+        .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
+        .map((t) => {
+          var hipchatApi = new HipchatApi(config.hipchatToken);
+          var message = `Ritardo di ${t.stop.delay} minuti. ${watcher.stationName} (${moment(t.stop.departure).format('HH:mm')}) -> ${t.to}`;
+          return hipchatApi.sendNotification(config.hipchatRoomId, {
+            from: 'FfsDelay',
+            notify: true,
+            message: message
+          });
+        })))
+      .catch((err) => console.log(err));
+  };
 }
 
+
 function start() {
-  config.cronTimes.forEach((cronTime) => {
-    new cron.CronJob({
-      cronTime: cronTime,
-      onTick: checkDelay,
-      start: true,
-      timeZone: config.timeZone
+  config.watchers.forEach((watcher) => {
+    watcher.cronTimes.forEach((cronTime) => {
+      new cron.CronJob({
+        cronTime: cronTime,
+        onTick: getWatcherJob(watcher),
+        start: true,
+        timeZone: config.timeZone
+      });
     });
   });
+
 
   new cron.CronJob({
     cronTime: '0 0 * * 1-5',
@@ -58,4 +64,4 @@ function start() {
 
 var exports = module.exports = {};
 exports.start = start;
-exports.checkDelay = checkDelay;
+exports.getWatcherJob = getWatcherJob;

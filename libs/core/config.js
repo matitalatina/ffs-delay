@@ -3,10 +3,8 @@
 const hipchatRoomId = process.env.HIPCHAT_ROOM_ID;
 const hipchatToken = process.env.HIPCHAT_TOKEN;
 
-const stationName = 'Mendrisio S. Martino';
+const trainFilter = ['s_sn_r', 'ec_ic'];
 const limitTrains = 3;
-const transportationFilter = ['s_sn_r', 'ec_ic'];
-const trainDestinations = ['chiasso', 'albate'];
 
 const cronTimes = [
   //'*/5 * * * * *',
@@ -16,17 +14,39 @@ const cronTimes = [
   '5-25/1 19 * * 1-5'
 ];
 
+const mendrisioSanMartino = {
+  stationName: 'Mendrisio S. Martino',
+  limitTrains,
+  transportationFilter: trainFilter,
+  trainDestinations: ['chiasso', 'albate'],
+  cronTimes,
+};
+
+const mendrisio = {
+  stationName: 'Mendrisio S. Martino',
+  limitTrains,
+  transportationFilter: trainFilter,
+  trainDestinations: ['chiasso', 'albate'],
+  cronTimes,
+};
+
 const timeZone = 'Europe/Rome';
 
-var exports = module.exports = {};
-exports.hipchatRoomId = hipchatRoomId;
-exports.hipchatToken = hipchatToken;
+const defaults = {
+  timeZone,
+};
 
-exports.stationName = stationName;
-exports.limitTrains = limitTrains;
-exports.transportationFilter = transportationFilter;
-exports.trainDestinations = trainDestinations;
+const watchers = [
+  mendrisioSanMartino,
+  mendrisio,
+].map(w => Object.assign({}, w, defaults));
 
-exports.cronTimes = cronTimes;
-
-exports.timeZone = timeZone;
+module.exports = {
+  hipchatRoomId,
+  hipchatToken,
+  limitTrains,
+  cronTimes,
+  timeZone,
+  defaults,
+  watchers,
+};
