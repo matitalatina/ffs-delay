@@ -22,6 +22,5 @@ export HIPCHAT_ROOM_ID='YOUR HIPCHAT ROOM ID';
 
 ## Run docker
 
-`docker run -e HIPCHAT_TOKEN='<YOUR_HIPCHAT_ROOM_TOKEN>' -e HIPCHAT_ROOM_ID=''<YOUR_HIPCHAT_ROOM_ID>'' --init -it matitalatina/ffs-delay
-ls`
+`docker run -e HIPCHAT_TOKEN='<YOUR_HIPCHAT_ROOM_TOKEN>' -e HIPCHAT_ROOM_ID='<YOUR_HIPCHAT_ROOM_ID>' --init -d matitalatina/ffs-delay`
 
