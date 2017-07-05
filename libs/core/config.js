@@ -24,7 +24,7 @@ const mendrisio = {
   stationName: 'Mendrisio',
   limitTrains,
   transportationFilter: trainFilter,
-  trainDestinations: ['chiasso', 'milano'],
+  trainDestinations: ['milano'],
   cronTimes: [
     //'*/5 * * * * *',
     '35-59/1 17 * * 1-5',
