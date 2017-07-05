@@ -30,11 +30,12 @@ function getWatcherJob(watcher) {
         .map((t) => {
           var hipchatApi = new HipchatApi(config.hipchatToken);
           var message = `Ritardo di ${t.stop.delay} minuti. ${watcher.stationName} (${moment(t.stop.departure).format('HH:mm')}) -> ${t.to}`;
-          return hipchatApi.sendNotification(config.hipchatRoomId, {
+          const notificationOptions = Object.assign({
             from: 'FfsDelay',
             notify: true,
             message: message
-          });
+          }, watcher.notificationOptions || {});
+          return hipchatApi.sendNotification(config.hipchatRoomId, notificationOptions);
         })))
       .catch((err) => console.log(err));
   };

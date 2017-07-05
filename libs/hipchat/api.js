@@ -20,7 +20,7 @@ class HipchatApi {
     return HIPCHAT_BASE_URL + ROOM_NOTIFICATION_ENDPOINT + roomId + '/' + NOTIFICAITON_PARTIAL_ENDPOINT;
   }
 
-  sendNotification(roomId, message) {
+  sendNotification(roomId, notificationOptions) {
     /* Message format: https://www.hipchat.com/docs/apiv2/method/send_room_notification */
     const url = HipchatApi.getRoomNotificationEnpoint(roomId);
     //console.log('RoomId: ' + roomId, message, url)
@@ -28,7 +28,7 @@ class HipchatApi {
       headers: {
         Authorization: 'Bearer ' + this.apiKey
       },
-      body: message,
+      body: notificationOptions,
       json: true
     }));
   }

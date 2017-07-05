@@ -18,6 +18,9 @@ const mendrisioSanMartino = {
     '35-55/1 18 * * 1-5',
     '5-25/1 19 * * 1-5'
   ],
+  notificationOptions: {
+    color: 'yellow',
+  },
 };
 
 const mendrisio = {
@@ -32,6 +35,9 @@ const mendrisio = {
     '35-59/1 18 * * 1-5',
     '5-30/1 19 * * 1-5'
   ],
+  notificationOptions: {
+    color: 'gray',
+  },
 };
 
 const timeZone = 'Europe/Rome';

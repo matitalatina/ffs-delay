@@ -5,6 +5,9 @@ function getWatcher() {
     transportationFilter: ['s_sn_r', 'ec_ic'],
     trainDestinations: ['chiasso', 'albate'],
     timeZone: 'Europe/Rome',
+    notificationOptions: {
+      color: 'purple',
+    },
   };
 }
 
