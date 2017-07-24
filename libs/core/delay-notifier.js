@@ -2,6 +2,7 @@
 
 const FfsApi = require('../ffs/api.js').FfsApi;
 const HipchatApi = require('../hipchat/api.js').HipchatApi;
+const SlackApi = require('../slack/api.js').SlackApi;
 const stationboardOptionsFactory = require('../ffs/api.js').stationboardOptionsFactory;
 const moment = require('moment');
 const cron = require('cron');
@@ -28,17 +29,33 @@ function getWatcherJob(watcher) {
       .then(trains => Promise.all(trains
         .filter((t) => !!t.stop.delay && delayChecker.hasChange(t))
         .map((t) => {
-          var hipchatApi = new HipchatApi(config.hipchatToken);
-          var message = `Ritardo di ${t.stop.delay} minuti. ${watcher.stationName} (${moment(t.stop.departure).format('HH:mm')}) -> ${t.to}`;
-          const notificationOptions = Object.assign({
-            from: 'FfsDelay',
-            notify: true,
-            message: message
-          }, watcher.notificationOptions || {});
-          return hipchatApi.sendNotification(config.hipchatRoomId, notificationOptions);
+          return Promise.all([
+            sendHipchatNotification(watcher, t),
+            sendSlackNotification(watcher, t),
+          ]);
         })))
       .catch((err) => console.log(err));
   };
+}
+
+function sendHipchatNotification(watcher, train) {
+  var hipchatApi = new HipchatApi(config.hipchatToken);
+  var message = `Ritardo di ${train.stop.delay} minuti. ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
+  const notificationOptions = Object.assign({
+    from: 'FfsDelay',
+    notify: true,
+    message: message
+  }, watcher.notificationOptions || {});
+  return hipchatApi.sendNotification(config.hipchatRoomId, notificationOptions);
+}
+
+function sendSlackNotification(watcher, train) {
+  var message = `Ritardo di ${train.stop.delay} minuti. ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
+
+  const notificationOptions = {
+    text: message,
+  };
+  return SlackApi.sendNotification(config.slackWebhookUrl, notificationOptions);
 }
 
 

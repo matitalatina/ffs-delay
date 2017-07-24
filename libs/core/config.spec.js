@@ -15,6 +15,10 @@ describe('Config', () => {
     expect(Config.watchers).to.be.a('array');
   });
 
+  it('should have slack webhook url', () => {
+    expect(Config.slackWebhookUrl).to.be.a('string');
+  });
+
   describe('Watchers', () => {
     it('should contains defaults keys', () => {
       const defaultsKeys = Object.keys(Config.defaults);

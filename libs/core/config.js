@@ -2,6 +2,7 @@
 
 const hipchatRoomId = process.env.HIPCHAT_ROOM_ID;
 const hipchatToken = process.env.HIPCHAT_TOKEN;
+const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
 
 const trainFilter = ['s_sn_r', 'ec_ic'];
 const limitTrains = 3;
@@ -54,6 +55,7 @@ const watchers = [
 module.exports = {
   hipchatRoomId,
   hipchatToken,
+  slackWebhookUrl,
   limitTrains,
   timeZone,
   defaults,

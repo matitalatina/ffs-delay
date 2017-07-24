@@ -3,13 +3,16 @@
 const moment = require('moment');
 const DelayNotifier = require('./delay-notifier.js');
 const FfsMock = require('../ffs/api.mock.js');
-const config = require('./config.js');
+const sinon = require('sinon');
 const NotificationMock = require('../hipchat/api.mock.js').mockSendNotification;
 const DelayChecker = require('../ffs/delay-checker.js');
 const fixtures = require('./fixtures.spec.js');
 const HipchatApi = require('../hipchat/api.js').HipchatApi;
-const sinon = require('sinon');
+const SlackApi = require('../slack/api.js').SlackApi;
 const expect = require('chai').expect;
+
+const sandbox = sinon.sandbox.create();
+let slackPostStub;
 
 beforeEach(function () {
   let delayChecker = new DelayChecker();
@@ -17,6 +20,14 @@ beforeEach(function () {
 });
 
 describe('DelayNotifier', () => {
+  beforeEach(function () {
+    slackPostStub = sandbox.stub(SlackApi, 'sendNotification')
+      .returns(Promise.resolve('ok'));
+  });
+  afterEach(function () {
+    sandbox.restore();
+  });
+
   it('should notify if a train is late', () => {
     let dateTime = moment().format('YYYY-MM-DD HH:mm');
     const watcher = fixtures.getWatcher();
@@ -33,6 +44,7 @@ describe('DelayNotifier', () => {
       datetime: dateTime
     })
       .then(() => {
+        expect(slackPostStub.called).to.be.true;
         mockFfsStationBoard.done();
         notificationMock.done();
       });
@@ -49,8 +61,7 @@ describe('DelayNotifier', () => {
     })
       .reply(200, FfsMock.stationboardResponseWithDelay);
     const notificationMock = NotificationMock();
-    console.log('aaa')
-    const notificationSpy = sinon.spy(HipchatApi.prototype, 'sendNotification');
+    const notificationSpy = sandbox.spy(HipchatApi.prototype, 'sendNotification');
 
     return DelayNotifier.getWatcherJob(fixtures.getWatcher())({
       datetime: dateTime
