@@ -14,6 +14,7 @@ App that checks Swiss trains and notifies you in HipChat if any of them have som
 ```
 export HIPCHAT_TOKEN='YOUR HIPCHAT ROOM TOKEN';
 export HIPCHAT_ROOM_ID='YOUR HIPCHAT ROOM ID';
+export SLACK_WEBHOOK_URL='YOUR SLACK INCOMING WEBHOOK URL';
 ```
 - Change constants inside `./libs/core/config.js` to satisfy your needs.
 - `npm install`
@@ -22,5 +23,5 @@ export HIPCHAT_ROOM_ID='YOUR HIPCHAT ROOM ID';
 
 ## Run docker
 
-`docker run -e HIPCHAT_TOKEN='<YOUR_HIPCHAT_ROOM_TOKEN>' -e HIPCHAT_ROOM_ID='<YOUR_HIPCHAT_ROOM_ID>' --init -d matitalatina/ffs-delay`
+`docker run -e HIPCHAT_TOKEN='<YOUR_HIPCHAT_ROOM_TOKEN>' -e HIPCHAT_ROOM_ID='<YOUR_HIPCHAT_ROOM_ID>' -e SLACK_WEBHOOK_URL='YOUR SLACK WEBHOOK URL' --init -d matitalatina/ffs-delay`
 
