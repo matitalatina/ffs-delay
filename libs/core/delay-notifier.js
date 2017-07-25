@@ -39,6 +39,10 @@ function getWatcherJob(watcher) {
 }
 
 function sendHipchatNotification(watcher, train) {
+  if (!config.hipchatToken || !config.hipchatRoomId) {
+    return null;
+  }
+
   var hipchatApi = new HipchatApi(config.hipchatToken);
   var message = `Ritardo di ${train.stop.delay} minuti. ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
   const notificationOptions = Object.assign({
@@ -50,6 +54,10 @@ function sendHipchatNotification(watcher, train) {
 }
 
 function sendSlackNotification(watcher, train) {
+  if (!config.slackWebhookUrl) {
+    return null;
+  }
+
   var message = `Ritardo di ${train.stop.delay} minuti. ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
 
   const notificationOptions = {

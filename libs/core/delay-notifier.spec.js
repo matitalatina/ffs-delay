@@ -9,6 +9,7 @@ const DelayChecker = require('../ffs/delay-checker.js');
 const fixtures = require('./fixtures.spec.js');
 const HipchatApi = require('../hipchat/api.js').HipchatApi;
 const SlackApi = require('../slack/api.js').SlackApi;
+const config = require('./config.js');
 const expect = require('chai').expect;
 
 const sandbox = sinon.sandbox.create();
@@ -47,6 +48,19 @@ describe('DelayNotifier', () => {
         expect(slackPostStub.called).to.be.true;
         mockFfsStationBoard.done();
         notificationMock.done();
+      });
+  });
+
+  it('should not notify if a train is late and hipchat and slack are not set', () => {
+    sandbox.stub(config, 'hipchatRoomId').returns(null);
+    sandbox.stub(config, 'slackWebhookUrl').returns(null);
+    let dateTime = moment().format('YYYY-MM-DD HH:mm');
+
+    return DelayNotifier.getWatcherJob(fixtures.getWatcher())({
+      datetime: dateTime
+    })
+      .then(() => {
+        expect(slackPostStub.called).to.be.false;
       });
   });
 
