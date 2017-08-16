@@ -37,7 +37,7 @@ class Journey {
       stationNamesSubstring = [stationNamesSubstring];
     }
     stationNamesSubstring = stationNamesSubstring.map(s => s.toLowerCase());
-    const stationNamesIsPassing = this.passList.map(s => s.station.name.toLowerCase()).concat([this.to.toLowerCase()]);
+    const stationNamesIsPassing = this.passList.map(s => (s.station.name || '').toLowerCase()).concat([this.to.toLowerCase()]);
     return !!_.find(stationNamesIsPassing,
       n => !!_.find(stationNamesSubstring, stationName => _.includes(n, stationName)));
   }
