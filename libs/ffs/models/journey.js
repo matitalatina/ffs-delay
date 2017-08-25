@@ -9,6 +9,7 @@ class Journey {
     this.delay = defaults.delay;
     this.name = defaults.name;
     this.to = defaults.to;
+    this.category = defaults.category;
     this.stop = defaults.stop;
     this.number = defaults.number;
     this.passList = defaults.passList;
@@ -20,6 +21,7 @@ class Journey {
       stop: Stop.fromFfsModel(ffsJourney.stop),
       name: ffsJourney.name,
       to: ffsJourney.to,
+      category: ffsJourney.category,
       number: ffsJourney.number,
       passList: passList.map(s => Stop.fromFfsModel(s))
     });

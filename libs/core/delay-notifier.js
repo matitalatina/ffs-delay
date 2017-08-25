@@ -44,7 +44,7 @@ function sendHipchatNotification(watcher, train) {
   }
 
   var hipchatApi = new HipchatApi(config.hipchatToken);
-  var message = `Ritardo di ${train.stop.delay} minuti. ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
+  var message = `Ritardo di ${train.stop.delay} minuti. [${train.category}${train.number}] ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
   const notificationOptions = Object.assign({
     from: 'FfsDelay',
     notify: true,
@@ -58,7 +58,7 @@ function sendSlackNotification(watcher, train) {
     return null;
   }
 
-  var message = `Ritardo di ${train.stop.delay} minuti. ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
+  var message = `Ritardo di ${train.stop.delay} minuti. [${train.category}${train.number}] ${watcher.stationName} (${moment(train.stop.departure).format('HH:mm')}) -> ${train.to}`;
 
   const notificationOptions = {
     text: message,
